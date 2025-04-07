@@ -13,28 +13,58 @@ function Counter() {
   const [step, setStep] = useState(1);
   const [count, setCount] = useState(0);
 
-  const date = calculateDate(count);
+  const date = calculateDate(count); // today + count
+
+  function handleReset() {
+    setStep(1);
+    setCount(0);
+  }
 
   return (
     <>
+      {
+        // step slider
+      }
       <div>
-        <MinusButton setFunc={setStep} delta={1} />
-        Step: {step}
-        <PlusButton setFunc={setStep} delta={1} />
+        <input
+          type="range"
+          min={0}
+          max={10}
+          value={step}
+          onChange={(e) => setStep(Number(e.target.value))}
+        />
+        {step}
       </div>
 
+      {
+        // count input and buttons
+      }
       <div>
         <MinusButton setFunc={setCount} delta={step} />
-        Count: {count}
+        <input
+          type="text"
+          value={count}
+          onChange={(e) => setCount(Number(e.target.value))}
+        ></input>
         <PlusButton setFunc={setCount} delta={step} />
       </div>
 
+      {
+        // date display
+      }
       <p>
         {count === 0 && `Today is ${date}`}
         {count > 0 &&
-          `${count} day${count > 1 ? "s" : ""} from today is ${date}`}
+          `${count} day${count > 1 ? "s" : ""} from Today is ${date}`}
         {count < 0 && `${-count} day${count < -1 ? "s" : ""} ago was ${date}`}
       </p>
+
+      {
+        // reset button, not displayed if nothing to reset
+      }
+      {(count !== 0 || step !== 1) && (
+        <button onClick={handleReset}>Reset</button>
+      )}
     </>
   );
 }
@@ -55,6 +85,7 @@ function MinusButton({ setFunc, delta }) {
   return <PlusButton setFunc={setFunc} delta={-delta} minus={true} />;
 }
 
+// today - count
 function calculateDate(delta) {
   const today = new Date();
   const newDate = new Date();
