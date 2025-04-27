@@ -7,8 +7,6 @@ const messages = [
   "Invest your new income 🤑",
 ];
 
-const purpleButton = { backgroundColor: "#7950f2", color: "#fff" };
-
 const isActiveStep = (current_step, check_step) => {
   return current_step >= check_step ? "active" : "";
 };
@@ -43,21 +41,38 @@ function App() {
             })}
           </div>
 
-          <p className="message">
-            Step {step}: {messages[step - 1]}
-          </p>
+          <StepMessage step={step}>{messages[step - 1]}</StepMessage>
 
           <div className="buttons">
-            <button style={purpleButton} onClick={handlePrevious}>
-              Previous
-            </button>
-            <button style={purpleButton} onClick={handleNext}>
-              Next
-            </button>
+            <Button onClick={handlePrevious}>
+              <span>👈</span>Previous
+            </Button>
+            <Button onClick={handleNext}>
+              Next<span>👉</span>
+            </Button>
           </div>
         </div>
       )}
     </>
+  );
+}
+
+function Button({ onClick, children }) {
+  const style = { backgroundColor: "#7950f2", color: "#fff" };
+
+  return (
+    <button style={style} onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
+function StepMessage({ step, children }) {
+  return (
+    <div className="message">
+      <h3>Step {step}</h3>
+      {children}
+    </div>
   );
 }
 
